@@ -18,6 +18,10 @@ class Interpreter:
         self.text = text
         self.pos = 0
 
+    def skip_spaces(self):
+        while self.text[self.pos] == ' ':
+            self.pos += 1
+
     def eval(self):
         a = self.get_next_token()
         self.check_type(a, TokenTypes.NUMBER)
@@ -45,7 +49,10 @@ class Interpreter:
         if self.pos >= len(self.text):
             return Token(TokenTypes.EOT)
 
-        elif 48 <= ord(self.text[self.pos]) <= 57:
+        if self.text[self.pos] == ' ':
+            self.skip_spaces()
+
+        if 48 <= ord(self.text[self.pos]) <= 57:
             p1 = self.pos + 1
             while p1 < len(self.text) and 48 <= ord(self.text[p1]) <= 57:
                 p1 += 1
